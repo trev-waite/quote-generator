@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 33 10% 88%; /* Base cream in HSL (updated) */
+    --foreground: 240 2% 16%; /* Base black in HSL */
+
+    --card: 33 10% 88%;
+    --card-foreground: 240 2% 16%;
+
+    --popover: 33 10% 88%;
+    --popover-foreground: 240 2% 16%;
+
+    --primary: 240 2% 16%;
+    --primary-foreground: 33 10% 88%;
+
+    --secondary: 240 2% 26%;
+    --secondary-foreground: 33 10% 88%;
+
+    --muted: 33 10% 78%;
+    --muted-foreground: 240 2% 36%;
+
+    --accent: 33 10% 78%;
+    --accent-foreground: 240 2% 16%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 33 10% 88%;
+
+    --border: 240 2% 80%;
+    --input: 240 2% 80%;
+    --ring: 240 2% 16%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 2% 16%; /* Base black in HSL */
+    --foreground: 33 10% 88%; /* Base cream in HSL (updated) */
+
+    --card: 240 2% 16%;
+    --card-foreground: 33 10% 88%;
+
+    --popover: 240 2% 16%;
+    --popover-foreground: 33 10% 88%;
+
+    --primary: 33 10% 88%;
+    --primary-foreground: 240 2% 16%;
+
+    --secondary: 33 10% 78%;
+    --secondary-foreground: 240 2% 16%;
+
+    --muted: 240 2% 26%;
+    --muted-foreground: 33 10% 78%;
+
+    --accent: 240 2% 26%;
+    --accent-foreground: 33 10% 88%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 33 10% 88%;
+
+    --border: 240 2% 26%;
+    --input: 240 2% 26%;
+    --ring: 33 10% 88%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer components {
+  /* Theme-based button (base-black in light mode, base-cream in dark mode) */
+  .theme-button {
+    @apply bg-base-black text-base-cream hover:bg-opacity-90 dark:bg-base-cream dark:text-base-black dark:hover:bg-opacity-90;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Gradient button with blue/red/yellow fade */
+  .gradient-button {
+    background: linear-gradient(90deg, #4361ee, #e63946, #ffb703);
+    background-size: 200% 200%;
+    animation: gradient-animation 6s ease infinite;
+    @apply text-white border-none shadow-md hover:shadow-lg;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .gradient-button:hover {
+    transform: translateY(-2px);
+  }
+
+  .gradient-button:disabled {
+    background: #ccc;
+    animation: none;
+    @apply text-gray-500;
+  }
+
+  @keyframes gradient-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
