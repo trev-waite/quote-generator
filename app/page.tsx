@@ -10,7 +10,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function Home() {
   const [quote, setQuote] = useState({ text: "", author: "" })
-  const [aiAnalysis, setAiAnalysis] = useState(null)
+  const [aiAnalysis, setAiAnalysis] = useState<{ interpretation: string; image: string; } | null>(null)
   const [isLoadingQuote, setIsLoadingQuote] = useState(true)
   const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false)
   const [error, setError] = useState("")
