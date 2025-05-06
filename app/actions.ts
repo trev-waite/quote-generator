@@ -22,22 +22,26 @@ export async function getRandomQuote(): Promise<Quote> {
 // Generate AI analysis and image for a quote
 export async function generateAIAnalysis(quoteText: string, author: string) {
   try {
-    // Generate interpretation and image using Gemini
-    const result = await generateText({
+    // 1. Generate interpretation (text only)
+    const interpretationResult = await generateText({
+      model: google("gemini-2.0-flash-exp"),
+      prompt: `Create a short, around 75 word, interpretation of the meaning of this quote. Do not inclde the actual quote in your response. In you response don't mention anything here as well, just give your interpretation: "${quoteText}" by ${author}.`,
+    })
+
+    const interpretation = interpretationResult.text || ""
+
+    // 2. Generate image using the interpretation
+    let image = ""
+    const imageResult = await generateText({
       model: google("gemini-2.0-flash-exp"),
       providerOptions: {
         google: { responseModalities: ["TEXT", "IMAGE"] },
       },
-      prompt: `Create a short, around 75 word, interpretation of the meaning of this quote: "${quoteText}" by ${author}. Then using that interpretation, create an artistic image that shows a scene representing your interpretation.`,
+      prompt: `Create an artistic image that shows a scene representing this interpretation of a quote: ${interpretation}`,
     })
 
-    let interpretation = ""
-    let image = ""
-    if (result.text) {
-      interpretation = result.text
-    }
-    if (result.files && result.files.length > 0) {
-      const imageFile = result.files.find((file: any) => file.mimeType && file.mimeType.startsWith("image/"))
+    if (imageResult.files && imageResult.files.length > 0) {
+      const imageFile = imageResult.files.find((file: any) => file.mimeType && file.mimeType.startsWith("image/"))
       if (imageFile) {
         image = imageFile.base64 || ""
       }
