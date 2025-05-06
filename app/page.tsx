@@ -83,7 +83,7 @@ export default function Home() {
             className="gap-2 gradient-button"
           >
             <Sparkles className="h-4 w-4" />
-            {isGeneratingAnalysis ? "Generating..." : "Generate OpenAI Analysis"}
+            {isGeneratingAnalysis ? "Generating..." : "Generate AI Analysis"}
           </Button>
         </div>
 

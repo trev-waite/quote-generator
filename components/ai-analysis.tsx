@@ -22,12 +22,26 @@ export default function AIAnalysis({ analysis }: AIAnalysisProps) {
           {analysis.image && (
             <div className="flex justify-center">
               <div className="relative w-full max-w-md aspect-video rounded-md overflow-hidden">
-                <Image
-                  src={analysis.image || "/placeholder.svg"}
-                  alt="AI generated image based on the quote"
-                  fill
-                  className="object-cover"
-                />
+                {analysis.image.startsWith("data:image/") ? (
+                  <img
+                    src={analysis.image}
+                    alt="AI generated image based on the quote"
+                    className="object-cover w-full h-full"
+                  />
+                ) : analysis.image.match(/^[A-Za-z0-9+/=]+$/) ? (
+                  <img
+                    src={`data:image/png;base64,${analysis.image}`}
+                    alt="AI generated image based on the quote"
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <Image
+                    src={analysis.image}
+                    alt="AI generated image based on the quote"
+                    fill
+                    className="object-cover"
+                  />
+                )}
               </div>
             </div>
           )}
