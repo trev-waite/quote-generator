@@ -5,14 +5,15 @@ import { Button } from "@/components/ui/button"
 import { Loader2, RefreshCw, Sparkles } from "lucide-react"
 import QuoteDisplay from "@/components/quote-display"
 import AIAnalysis from "@/components/ai-analysis"
-import { getRandomQuote, generateAIAnalysis } from "@/app/actions"
+import { getRandomQuote, generateInterpretation, generateAIImage } from "@/app/actions"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function Home() {
   const [quote, setQuote] = useState({ text: "", author: "" })
-  const [aiAnalysis, setAiAnalysis] = useState<{ interpretation: string; image: string; } | null>(null)
+  const [aiAnalysis, setAiAnalysis] = useState<{ interpretation: string; image: string | null; } | null>(null)
   const [isLoadingQuote, setIsLoadingQuote] = useState(true)
   const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false)
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false)
   const [error, setError] = useState("")
 
   useEffect(() => {
@@ -39,16 +40,23 @@ export default function Home() {
     if (isGeneratingAnalysis) return
 
     setIsGeneratingAnalysis(true)
+    setIsGeneratingImage(true)
     setError("")
 
     try {
-      const analysis = await generateAIAnalysis(quote.text, quote.author)
-      setAiAnalysis(analysis)
+      // First, generate the interpretation
+      const interpretation = await generateInterpretation(quote.text, quote.author)
+      setAiAnalysis({ interpretation, image: null })
+
+      // Then, generate the image
+      const image = await generateAIImage(interpretation)
+      setAiAnalysis(prev => ({ ...prev!, image }))
     } catch (error) {
       console.error("Failed to generate analysis:", error)
       setError("Failed to generate analysis. Please try again.")
     } finally {
       setIsGeneratingAnalysis(false)
+      setIsGeneratingImage(false)
     }
   }
 
